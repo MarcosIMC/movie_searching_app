@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:movie_searching/providers/user_provider.dart';
 import 'package:movie_searching/screens/main_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => UserProvider())
+    ],
+    child: MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
