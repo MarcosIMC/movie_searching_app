@@ -28,7 +28,7 @@ void main() {
     });
 
     test('Insert user', () async {
-      final user = User('Marcos', 'Medina', 'mm@mm.com', '12345', '123445', []);
+      final user = User('Marcos', 'Medina', 'mm@mm.com', '12345', '123445');
       final insertId = await dbHelper.insertUser(user);
       expect(insertId, isNotNull);
     });

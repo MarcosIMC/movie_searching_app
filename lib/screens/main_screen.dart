@@ -3,10 +3,14 @@ import 'dart:ffi';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_searching/models/movie.dart';
+import 'package:movie_searching/providers/user_provider.dart';
 import 'package:movie_searching/screens/login_screen.dart';
 import 'package:movie_searching/screens/movie_details_screen.dart';
+import 'package:movie_searching/screens/profile_secreen.dart';
+import 'package:movie_searching/services/sql_helper.dart';
 import 'package:movie_searching/widgets/card_movie.dart';
 import 'package:movie_searching/widgets/carousel.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -20,12 +24,15 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<UserProvider>(context);
+    //SqlHelper.instance.deleteDB();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Movie Searching'),
         actions: [
           IconButton(onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginScreen()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => provider.user == null ? LoginScreen() : ProfileSecreen(user: provider.user!)));
           }, icon: Icon(Icons.account_circle_outlined))
         ],
       ),

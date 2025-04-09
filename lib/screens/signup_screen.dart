@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movie_searching/models/user.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
+import '../providers/user_provider.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -14,15 +18,19 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isVisible = false;
+  late UserProvider provider;
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
       //Hacemos alguna acción
+      provider.signup(User(_nameController.text, _surnameController.text, id: Uuid().v4(), email: _emailController.text, password: _passwordController.text));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sign Up'),
@@ -49,7 +57,7 @@ class _SignupScreenState extends State<SignupScreen> {
               TextFormField(
                 controller: _surnameController,
                 decoration: InputDecoration(
-                  labelText: 'Surnam',
+                  labelText: 'Surname',
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {

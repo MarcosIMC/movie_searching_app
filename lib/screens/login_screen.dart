@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movie_searching/models/user.dart';
+import 'package:movie_searching/providers/user_provider.dart';
 import 'package:movie_searching/screens/signup_screen.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,15 +16,25 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isVisible = false;
+  late UserProvider provider;
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       //hacemos alguna acción ya que es válido
+      User? user = await provider.login(_emailController.text, _passwordController.text);
+      if (user != null) {
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Wrong email or password. Try again.'))
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
