@@ -3,6 +3,8 @@ import 'dart:ffi';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_searching/models/movie.dart';
+import 'package:movie_searching/screens/login_screen.dart';
+import 'package:movie_searching/screens/movie_details_screen.dart';
 import 'package:movie_searching/widgets/card_movie.dart';
 import 'package:movie_searching/widgets/carousel.dart';
 
@@ -22,7 +24,9 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: const Text('Movie Searching'),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.account_circle_outlined))
+          IconButton(onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginScreen()));
+          }, icon: Icon(Icons.account_circle_outlined))
         ],
       ),
       body: Padding(
@@ -53,7 +57,21 @@ class _MainScreenState extends State<MainScreen> {
             Divider(height: 20,),
             Carousel(),
             SizedBox(height: 20,),
-            CardMovie(movie: Movie('Titanic', 'Gran película de un buque enorme que quiere ir a USA pero se le complica...', 'https://i.ytimg.com/vi/A1FtRovJMxk/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDSDRGU7c9EGMuHNqhR9nbWEfFrrg', []),)
+            Expanded(
+              child: ListView.builder(
+                itemCount: 1,
+                itemBuilder: (context, index) {
+                  final movie = Movie('Titanic', 'Gran película de un buque enorme que quiere ir a USA pero se le complica...', 'https://i.ytimg.com/vi/A1FtRovJMxk/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDSDRGU7c9EGMuHNqhR9nbWEfFrrg', []);
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MovieDetailsScreen(movie: movie)));
+                    },
+                    child: CardMovie(movie: movie)
+                    ,
+                  );
+                },
+              ),
+            )
           ],
         ),
       )
