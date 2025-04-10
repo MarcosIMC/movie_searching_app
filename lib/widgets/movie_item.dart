@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:movie_searching/providers/movie_provider.dart';
+import 'package:movie_searching/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../models/movie.dart';
+import '../models/user.dart';
 import '../screens/movie_details_screen.dart';
 import '../services/movie_api.dart';
 import 'card_movie.dart';
 
 class MovieItem extends StatefulWidget {
   final String? title;
-  
-  const MovieItem({super.key, this.title});
+  final bool isAllMovies;
+
+  const MovieItem({super.key, this.title, required this.isAllMovies});
 
   @override
   State<MovieItem> createState() => _MovieItemState();
@@ -24,10 +29,21 @@ Future<List<dynamic>> fetchMovie(String title) async {
   return data;
 }
 
+Future<List<dynamic>> fetchFav(MovieProvider movieProvider) async {
+  final data = await MovieApi().getFavMovies(movieProvider.favMoviesTitle);
+  return data;
+}
+
 class _MovieItemState extends State<MovieItem> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: widget.title == null ? fetchMovieList() : fetchMovie(widget.title!),
+    var movieProvider = Provider.of<MovieProvider>(context);
+
+    return FutureBuilder(future: widget.isAllMovies == false ?
+    fetchFav(movieProvider) :
+    widget.title == null ?
+    fetchMovieList() :
+    fetchMovie(widget.title!),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
