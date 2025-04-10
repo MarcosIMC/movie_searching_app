@@ -13,7 +13,6 @@ class UserProvider with ChangeNotifier {
     var rowId = await _sqlHelper.insertUser(user);
 
     if (rowId != null) {
-      print(rowId);
       notifyListeners();
     }
   }
