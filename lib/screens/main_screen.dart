@@ -84,9 +84,9 @@ class _MainScreenState extends State<MainScreen> {
             Carousel(),
             SizedBox(height: 20,),
             _allMovies ?
-            MovieItem(title: title,)
+            MovieItem(title: title, isAllMovies: _allMovies,)
                 : movieProvider.favMoviesTitle.isNotEmpty && userProvider.user != null ?
-            MovieItem(title: title,)
+            MovieItem(title: title, isAllMovies: _allMovies,)
                 : Text(userProvider.user != null ? 'Aún no tienes películas favoritas' : 'Inicia sesión para ver tus favoritos')
           ],
         ),

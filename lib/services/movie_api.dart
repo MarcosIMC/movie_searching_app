@@ -44,4 +44,23 @@ class MovieApi {
 
     return jsonResult;
   }
+
+  Future<List<dynamic>> getFavMovies(List<String> favMovies) async {
+    var uri;
+    var response;
+    var jsonResult = [];
+
+    for (var title in favMovies) {
+      uri = Uri.parse('$baseURL$title&apikey=$apiKey');
+      response = await http.get(uri);
+
+      if (response.statusCode == 200) {
+        jsonResult.add(json.decode(response.body));
+      } else {
+        throw Exception('Error al obtener las películas del carousel. ${response.statusCode}');
+      }
+    }
+
+    return jsonResult;
+  }
 }
