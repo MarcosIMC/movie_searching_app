@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:movie_searching/providers/movie_provider.dart';
 import 'package:movie_searching/providers/user_provider.dart';
 import 'package:movie_searching/screens/main_screen.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,8 @@ void main() async {
 
   runApp(
     MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) => UserProvider())
+      ChangeNotifierProvider(create: (_) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => MovieProvider())
     ],
     child: MyApp(),
     )
