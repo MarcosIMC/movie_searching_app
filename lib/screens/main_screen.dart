@@ -10,7 +10,10 @@ import 'package:movie_searching/screens/profile_secreen.dart';
 import 'package:movie_searching/services/sql_helper.dart';
 import 'package:movie_searching/widgets/card_movie.dart';
 import 'package:movie_searching/widgets/carousel.dart';
+import 'package:movie_searching/widgets/movie_item.dart';
 import 'package:provider/provider.dart';
+
+import '../services/movie_api.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -19,13 +22,18 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
+Future<List<dynamic>> fetchMovies() async {
+  final data = await MovieApi().getListMovies('moviesToList');
+  return data;
+}
+
 class _MainScreenState extends State<MainScreen> {
   bool _allMovies = true;
+  String? title;
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<UserProvider>(context);
-    //SqlHelper.instance.deleteDB();
 
     return Scaffold(
       appBar: AppBar(
@@ -47,6 +55,15 @@ class _MainScreenState extends State<MainScreen> {
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder()
               ),
+              onSubmitted: (query) {
+                setState(() {
+                  if (query.isNotEmpty) {
+                    title = query;
+                  } else {
+                    title = null;
+                  }
+                });
+              },
             ),
             SegmentedButton<bool>(
               segments: [
@@ -64,21 +81,7 @@ class _MainScreenState extends State<MainScreen> {
             Divider(height: 20,),
             Carousel(),
             SizedBox(height: 20,),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 1,
-                itemBuilder: (context, index) {
-                  final movie = Movie('Titanic', 'Gran película de un buque enorme que quiere ir a USA pero se le complica...', 'https://i.ytimg.com/vi/A1FtRovJMxk/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDSDRGU7c9EGMuHNqhR9nbWEfFrrg', []);
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MovieDetailsScreen(movie: movie)));
-                    },
-                    child: CardMovie(movie: movie)
-                    ,
-                  );
-                },
-              ),
-            )
+            MovieItem(title: title,)
           ],
         ),
       )
