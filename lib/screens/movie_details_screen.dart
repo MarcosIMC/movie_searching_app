@@ -14,10 +14,10 @@ class MovieDetailsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.network(movie.urlImage),
+            Image.network(movie.poster),
             IconButton(onPressed: () {}, icon: Icon(Icons.favorite_border)),
             Divider(height: 10,),
-            Text(movie.description,
+            Text(movie.plot,
               textAlign: TextAlign.start,
               style: TextStyle(
                   fontSize: 20

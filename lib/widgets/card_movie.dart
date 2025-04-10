@@ -19,9 +19,9 @@ class _CardMovieState extends State<CardMovie> {
     return Card(
       child: Column(
         children: [
-          Image.network(movie.urlImage),
+          Image.network(movie.poster),
           Text(movie.title),
-          Text('${movie.description.substring(0, 50)}...')
+          Text('${movie.plot.substring(0, 50)}...')
         ],
       ),
     );
