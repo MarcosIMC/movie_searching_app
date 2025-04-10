@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_searching/models/movie.dart';
+import 'package:movie_searching/providers/movie_provider.dart';
 import 'package:movie_searching/providers/user_provider.dart';
 import 'package:movie_searching/screens/login_screen.dart';
 import 'package:movie_searching/screens/movie_details_screen.dart';
@@ -33,14 +34,15 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<UserProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
+    final movieProvider = Provider.of<MovieProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Movie Searching'),
         actions: [
           IconButton(onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => provider.user == null ? LoginScreen() : ProfileSecreen(user: provider.user!)));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProvider.user == null ? LoginScreen() : ProfileSecreen(user: userProvider.user!)));
           }, icon: Icon(Icons.account_circle_outlined))
         ],
       ),
@@ -81,7 +83,11 @@ class _MainScreenState extends State<MainScreen> {
             Divider(height: 20,),
             Carousel(),
             SizedBox(height: 20,),
+            _allMovies ?
             MovieItem(title: title,)
+                : movieProvider.favMoviesTitle.isNotEmpty && userProvider.user != null ?
+            MovieItem(title: title,)
+                : Text(userProvider.user != null ? 'Aún no tienes películas favoritas' : 'Inicia sesión para ver tus favoritos')
           ],
         ),
       )

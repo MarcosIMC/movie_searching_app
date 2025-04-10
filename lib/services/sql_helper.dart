@@ -38,6 +38,12 @@ class SqlHelper {
     return await db.insert('users', user.toMap());
   }
 
+  Future<int?> insertMovie(User user, String title) async {
+    final db = await database;
+
+    return await db.insert('favourites', {'userID': user.id, 'title': title});
+  }
+
   Future<User?> login(String email, String password) async {
     final db = await database;
     final result = await db.query(
