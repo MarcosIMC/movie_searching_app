@@ -29,6 +29,7 @@ Future<List<dynamic>> fetchMovies() async {
 
 class _MainScreenState extends State<MainScreen> {
   bool _allMovies = true;
+  String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +55,15 @@ class _MainScreenState extends State<MainScreen> {
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder()
               ),
+              onSubmitted: (query) {
+                setState(() {
+                  if (query.isNotEmpty) {
+                    title = query;
+                  } else {
+                    title = null;
+                  }
+                });
+              },
             ),
             SegmentedButton<bool>(
               segments: [
@@ -71,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
             Divider(height: 20,),
             Carousel(),
             SizedBox(height: 20,),
-            MovieItem()
+            MovieItem(title: title,)
           ],
         ),
       )

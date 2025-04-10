@@ -31,14 +31,17 @@ class MovieApi {
     return jsonResult;
   }
 
-  Future<dynamic> getMovie(String title) async {
-    var uri = Uri.parse('$baseURL''title&apikey=$apiKey');
+  Future<List<dynamic>> getMovie(String title) async {
+    var uri = Uri.parse('$baseURL$title&apikey=$apiKey');
     var response = await http.get(uri);
+    var jsonResult = [];
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      jsonResult.add(json.decode(response.body));
     } else {
       throw Exception('Error al obtener las películas del carousel. ${response.statusCode}');
     }
+
+    return jsonResult;
   }
 }

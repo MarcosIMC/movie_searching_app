@@ -6,7 +6,9 @@ import '../services/movie_api.dart';
 import 'card_movie.dart';
 
 class MovieItem extends StatefulWidget {
-  const MovieItem({super.key});
+  final String? title;
+  
+  const MovieItem({super.key, this.title});
 
   @override
   State<MovieItem> createState() => _MovieItemState();
@@ -17,10 +19,15 @@ Future<List<dynamic>> fetchMovieList() async {
   return data;
 }
 
+Future<List<dynamic>> fetchMovie(String title) async {
+  final data = await MovieApi().getMovie(title);
+  return data;
+}
+
 class _MovieItemState extends State<MovieItem> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: fetchMovieList(),
+    return FutureBuilder(future: widget.title == null ? fetchMovieList() : fetchMovie(widget.title!),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -36,7 +43,7 @@ class _MovieItemState extends State<MovieItem> {
           } else {
             return Expanded(
               child: ListView.builder(
-                itemCount: MovieApi().moviesToList.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final movie = Movie(snapshot.data![index]['Title'], snapshot.data![index]['Plot'], snapshot.data![index]['Poster'], [], snapshot.data![index]['Year'], snapshot.data![index]['Runtime'], snapshot.data![index]['Released'], snapshot.data![index]['Awards']);
                   return GestureDetector(
