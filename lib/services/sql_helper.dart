@@ -11,6 +11,13 @@ class SqlHelper {
 
   static Database? _database;
 
+  static Database? _externalTestDB;
+
+  static void injectTestDatabase(Database db) {
+    _externalTestDB = db;
+    _database = db;
+  }
+
   Future<Database> get database async {
     if (_database != null) return _database!;
 
@@ -21,10 +28,10 @@ class SqlHelper {
   Future<Database> _initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+    return await openDatabase(path, version: 1, onCreate: onCreate);
   }
   
-  Future _onCreate(Database db, int version) async {
+  Future onCreate(Database db, int version) async {
     await db.execute(
         '''CREATE TABLE users (id TEXT PRIMARY KEY NOT NULL, name TEXT, surname TEXT, email TEXT, password TEXT)'''
     );
