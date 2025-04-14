@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_searching/providers/movie_provider.dart';
 import 'package:movie_searching/providers/user_provider.dart';
 import 'package:movie_searching/screens/main_screen.dart';
+import 'package:movie_searching/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -27,9 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: AppTheme.lightTheme,
       home: const MainScreen(),
       debugShowCheckedModeBanner: false,
     );
