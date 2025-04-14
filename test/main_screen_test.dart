@@ -3,8 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_searching/providers/movie_provider.dart';
 import 'package:movie_searching/providers/user_provider.dart';
 import 'package:movie_searching/screens/main_screen.dart';
-import 'package:movie_searching/screens/movie_details_screen.dart';
-import 'package:movie_searching/widgets/card_movie.dart';
 import 'package:movie_searching/widgets/carousel.dart';
 import 'package:movie_searching/widgets/movie_item.dart';
 import 'package:provider/provider.dart';
